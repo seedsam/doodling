@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2011-2036 International Air Transport Association corp.
- * All Rights Reserved.
- */
 package proxy;
 
 // 代理
