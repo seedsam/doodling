@@ -8,14 +8,25 @@ package proxy;
 //      jdk动态代理方式:implements,只能代理接口,反射    代理类其实继承了Proxy类
 //      CGLIB动态代理方式:extends,
 
-// 代理如果使用反射的话是否就能实现代理呢?
+// 问题基于缺陷,代理如果使用反射的话是否就能实现代理呢?
+// ===================
 // 为什么jdk动态代理只能实现接口,而不能继承呢?
+// ====================
+// 
 
 public class Main {
 
     public static void main(String[] args) {
         Subject subjectImpl = new SubjectImpl();
-        Subject subjectProxy = (Subject) new SubjectImplProxy(subjectImpl).getObjectProxy();
-        subjectProxy.sayHello("friend");
+
+        // jdk动态代理
+        Subject subjectJDKProxy = (Subject) new SubjectImplJDKProxy(subjectImpl).getObjectProxy();
+        subjectJDKProxy.sayHello("jdk");
+
+        // cglib动态代理
+        Subject subjectCGLIBProxy = (Subject) new SubjectImplCGLIBProxy(subjectImpl)
+                .getObjectProxy();
+        subjectCGLIBProxy.sayHello("cglib");
+
     }
 }
