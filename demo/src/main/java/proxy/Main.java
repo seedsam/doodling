@@ -1,9 +1,5 @@
 package proxy;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
-
 // 代理
 // 缺陷:如果是final类的话无法继承,final方法的话无法重写,原方法没有实现接口的话无法实现
 // 基于代理模式,有静态代理和动态代理两种方式,还有一种就是反射
@@ -18,52 +14,8 @@ import java.lang.reflect.Proxy;
 public class Main {
 
     public static void main(String[] args) {
-
-        Subject subjectProxy = (Subject) InvocationHandlerImpl
-                .getInvocationHandlerImpl(new RealSubject());
-
-        String hello = subjectProxy.sayHello("friend");
-
-        System.out.println(hello);
+        Subject subjectImpl = new SubjectImpl();
+        Subject subjectProxy = (Subject) new SubjectImplProxy(subjectImpl).getObjectProxy();
+        subjectProxy.sayHello("friend");
     }
-}
-
-// 接口
-interface Subject {
-
-    String sayHello(String str);
-}
-
-// 接口的实现类
-class RealSubject implements Subject {
-
-    @Override
-    public String sayHello(String str) {
-        return "Hello: " + str;
-    }
-}
-
-// jdk动态代理类
-class InvocationHandlerImpl implements InvocationHandler {
-
-    private Object object; // 要代理的对象
-
-    public InvocationHandlerImpl(Object object) {
-        this.object = object;
-    }
-
-    @Override
-    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        // 添加事务控制
-        System.out.println("在调用前,我要开始事务");
-        Object returnValue = method.invoke(object, args);
-        System.out.println("在调用后,我要提交事务");
-        return returnValue;
-    }
-
-    public static Object getInvocationHandlerImpl(Object object) {
-        return Proxy.newProxyInstance(object.getClass().getClassLoader(),
-                object.getClass().getInterfaces(), new InvocationHandlerImpl(object));
-    }
-
 }
