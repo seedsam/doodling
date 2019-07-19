@@ -20,7 +20,7 @@ public class SubjectImplCGLIBProxy implements MethodInterceptor {
         // 添加事务控制
         System.out.println("=========cglib动态代理=========");
         System.out.println("在调用前,我要开始事务");
-        Object returnValue = method.invoke(this.object, args);
+        Object returnValue = methodProxy.invokeSuper(object, args);
         System.out.println("在调用后,我要提交事务");
         System.out.println("=========cglib动态代理=========");
         return returnValue;
