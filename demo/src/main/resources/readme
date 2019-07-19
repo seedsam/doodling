@@ -1,0 +1,65 @@
+代理
+	缺陷:如果是final类的话无法继承,final方法的话无法重写,原方法没有实现接口的话无法实现
+	基于代理模式,有静态代理和动态代理两种方式,还有一种就是反射
+      静态代理的代理关系在编译时确定，而动态代理的代理关系在运行时确定，动态代理更灵活
+  		静态代理方式:属于硬编码方式,继承.实现重写方法
+  		动态代理:分为JDK动态代理和CGLIB动态代理
+     		jdk动态代理方式:implements,只能代理接口,反射    代理类其实继承了Proxy类
+     		CGLIB动态代理方式:extends
+
+基于缺陷提出问题,代理如果使用纯反射的话是否能够实现代理呢?
+	答案是可以的,那为什么又不这样做呢,纯反射代理和静态代理其实是没有区别的,属于硬编码,笨重,耦合度高,效率低.
+	
+===================
+jdk动态代理相关问题
+  JDK动态代理的缺点：
+    （一）通过反射类Proxy和InvocationHandler回调接口实现JDK动态代理，要求目标类必须实现一个接口，对于没有实现接口的类，无法通过这种方式实现动态代理。
+    （二）动态代理会为接口中的声明的所有方法添加上相同的代理逻辑，不够灵活
+      这样通过接口的方式有两个弊端，一个是必须保证target类有接口，
+      	第二个是如果想要对target类的方法进行代理拦截，那么就要保证这些方法都要在接口中声明，实现上略微有点限制。
+	为什么jdk动态代理只能代理实现接口的类?
+	    相关类和接口
+      Proxy
+        public static Object newProxyInstance(ClassLoader loader,Class<?>[] interfaces,InvocationHandler h)throws IllegalArgumentExceptio
+        0.通过该方法生成字节码，动态的创建一个代理类，interfaces参数是该动态类所继承的所有接口，
+          实现InvocationHandler的类是在调用代理接口方法前后的具体逻辑
+        1.生成一个实现了参数interfaces里所有接口且继承了Proxy的代理类的字节码，然后用参数里的classLoader加载这个代理类
+        2.使用代理类父类的构造函数Proxy(InvocationHandler h)来创造一个代理类的实例，将我们自定义的InvocationHandler的子类传入
+        3.返回这个代理类实例
+      InvocationHandler
+        public Object invoke(Object proxy, Method method,Object[]args)throws Throwable
+
+  在main方法中加入System.getProperties().put("sun.misc.ProxyGenerator.saveGeneratedFiles","true")，这样就会把生成的代理类Class文件保存在本地磁盘上，然后再反编译可以得到代理类的源码
+====================
+cglib动态代理相关问题
+  CGLIB(Code Generation Library)是一个基于ASM的字节码生成库，它允许我们在运行时对字节码进行修改和动态生成。CGLIB支持接口、继承方式实现代理。
+  原理：动态生成一个要代理类的子类，子类重写要代理的类的所有不是final的方法。在子类中采用方法拦截的技术拦截所有父类方法的调用，顺势将横切逻辑织入（weave）目标对象
+  CGLIB包的底层是通过使用一个小而快的字节码处理框架ASM，来转换字节码并生成新的类
+=================================
+总结：
+  1.JDK代理使用的是反射机制实现aop的动态代理，CGLIB代理使用字节码处理框架asm，通过修改字节码生成子类。
+    所以jdk动态代理的方式创建代理对象效率较高，执行效率较低，
+    cglib创建效率较低，执行效率高；
+  2.JDK动态代理机制是委托机制，具体说动态实现接口类，在动态生成的实现类里面委托hanlder去调用原始实现类方法，
+    CGLIB则使用的继承机制，具体说被代理类和代理类是继承关系，
+    所以代理类是可以赋值给被代理类的，如果被代理类有接口，那么代理类也可以赋值给接口。
+两种动态代理方式的比较
+  JDK动态代理不需要任何外部依赖，但是只能基于接口进行代理；
+  CGLIB通过继承的方式进行代理，无论目标对象有没有实现接口都可以代理，
+    但是无法代理final对象与final方法。（final类型不能有子类，final方法不能被重载）
+ 
+======================================= 
+demo
+source
+pattern
+ideology
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
