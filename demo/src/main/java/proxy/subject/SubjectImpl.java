@@ -1,4 +1,4 @@
-package proxy;
+package proxy.subject;
 
 public class SubjectImpl implements Subject {
 
