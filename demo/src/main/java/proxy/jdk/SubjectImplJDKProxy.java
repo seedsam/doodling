@@ -23,13 +23,17 @@ public class SubjectImplJDKProxy implements InvocationHandler {
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         // 添加事务控制
-        System.out.println("=========jdk动态代理=========");
+        System.out.println("=========jdk动态代理*开启事务*=========");
         // 方法的返回值
         Object returnValue = method.invoke(target, args);
-        System.out.println("=========jdk动态代理=========");
+        System.out.println("=========jdk动态代理*结束事务*=========");
         return returnValue;
     }
 
-   
+    // 返回代理对象
+    public Object getObjectProxy() {
+        return Proxy.newProxyInstance(target.getClass().getClassLoader(),
+                target.getClass().getInterfaces(), this);
+    }
 
 }
