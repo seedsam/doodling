@@ -6,8 +6,11 @@ package proxy.cglib;
 
 import java.lang.reflect.Method;
 
+import net.sf.cglib.proxy.CallbackHelper;
 import net.sf.cglib.proxy.Enhancer;
+import net.sf.cglib.proxy.FixedValue;
 import net.sf.cglib.proxy.InvocationHandler;
+import net.sf.cglib.proxy.NoOp;
 
 /**
  * 
@@ -23,19 +26,27 @@ public class SampleClass {
 
     public static void main(String[] args) {
         Enhancer enhancer = new Enhancer();
-        enhancer.setSuperclass(SampleClass.class);
-        enhancer.setCallback(new InvocationHandler() {
 
+        CallbackHelper callbackHelper = new CallbackHelper(SampleClass.class, new Class[0]) {
             @Override
-            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+            protected Object getCallback(Method method) {
                 if (method.getDeclaringClass() != Object.class
                         && method.getReturnType() == String.class) {
-                    return "hello cglib";
+                    return new FixedValue() {
+                        @Override
+                        public Object loadObject() throws Exception {
+                            return "hello cglib";
+                        }
+                    };
                 } else {
-                    throw new RuntimeException("Do not know what to do");
+                    return NoOp.INSTANCE;
                 }
             }
-        });
+        };
+
+        enhancer.setSuperclass(SampleClass.class);
+        enhancer.setCallbackFilter(callbackHelper);
+        enhancer.setCallbacks(callbackHelper.getCallbacks());
         SampleClass proxy = (SampleClass) enhancer.create();
         System.out.println(proxy.test(null));
         System.out.println(proxy.toString());
