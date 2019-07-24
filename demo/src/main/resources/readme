@@ -43,7 +43,8 @@ jdk动态代理
 		2.可以将代理对象返回以进行连续调用，这就是proxy存在的目的，因为this并不是代理对象
 ====================
 cglib动态代理
-	CGLIB(Code Generation Library)是一个基于ASM的字节码生成库,允许我们在运行时对字节码进行修改和动态生成
+	cglib - Byte Code Generation Library is high level API to generate and transform Java byte code. 
+	It is used by AOP, testing, data access frameworks to generate dynamic proxy objects and intercept field access.
 		支持接口、继承方式实现代理
   	原理:动态生成一个要代理类的子类，子类重写要代理的类的所有不是final的方法
   		在子类中采用方法拦截的技术拦截所有父类方法的调用，顺势将横切逻辑织入（weave）目标对象
