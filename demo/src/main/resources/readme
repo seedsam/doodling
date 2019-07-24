@@ -18,6 +18,13 @@
 相关联主题
 	回调函数
 		方法的演变
+			v1
+				ClassA { a(){} callback(){} }
+				ClassB { b(ClassA a){a.a(),a.callback()} }
+			v2	ClassA(被调用者)和ClassB(调用者)解耦
+				interface CallBack{ callback() }
+				ClassA implements CallBack{ a(){} callback(){} }
+				ClassB { b(CallBack callback){a.a(),callback.callback()} }
 		基于消息和事件的架构模型(异步回调)
 	模板方法
 	好莱坞原则	Don't call me,we will call you.
