@@ -122,7 +122,10 @@ public class Snmp4jFirstDemo {
 	PDU pdu = new PDU();
 	// PDU pdu = new ScopedPDU();
 	// 设置要获取的对象ID，这个OID代表远程计算机的名称
-	OID oids = new OID("1.3.6.1.2.1.1.5.0");
+	// ssCpuIdle(".1.3.6.1.4.1.2021.11.11.0", "GET")
+	// memTotalReal(".1.3.6.1.4.1.2021.4.5.0", "GET")
+	// memAvailReal(".1.3.6.1.4.1.2021.4.6.0", "GET")
+	OID oids = new OID("1.3.6.1.4.1.2021.11.11.0");
 	pdu.add(new VariableBinding(oids));
 	// 设置报文类型
 	pdu.setType(PDU.GET);
