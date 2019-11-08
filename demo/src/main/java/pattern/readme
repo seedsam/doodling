@@ -1,0 +1,36 @@
+观察者模式
+    定义了对象之间的一对多依赖，这样一来，当一个对象改变状态时，它的所有依赖者都会收到通知并自动更新
+
+    Subject接口，主题，包含Observer的一个引用
+    WeatherData实现Subject，包含Observer的一个引用
+    Observer接口，观察者接口
+    CurrentConditionsDisplay实现Observer，包含Subject的一个引用
+    WeatherStation客户端调用模拟
+    DisplayElement接口，其它辅助接口，无用
+
+    分为pull和push两种结构
+    应用：
+        待续。。。
+
+装饰者模式
+    动态地将责任附加到对象上。若要扩展功能，装饰者提供了比继承更有弹性的替代方案。
+
+    Beverage抽象类为被装饰者
+        已经实现的子类，DarkRoast.Decat.Espresso.HouseBlend.与之无关，不做任何修改。
+    CondimentDecorator抽象类为装饰者，继承被装饰者，作为装饰者扩展的根父类
+        不包含被装饰者的引用
+        Mocha.Soy.Whip.是实际的装饰者类，继承CondimentDecorator，包含被装饰者的引用，复写cost()方法
+    StarbuzzCoffee客户端调用模拟
+        实际调用的时候，还是以被装饰者的身份出现
+    应用：
+        I/O包内的类，FileInputStream是所有InputStream的抽象装饰者
+    弊端：
+        常常会造成设计中有大量的小类，数量太多，API阅读，使用困难
+    思考：
+        模式最大程度的体现了开闭原则
+        其实扩展的根父类可以包含被装饰者的引用，从而被子类或者实现类直接引用
+        这样做的话是不是就不能做延迟创建对象，从而造成不灵活？
+
+
+
+

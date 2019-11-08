@@ -1,17 +1,10 @@
 package pattern.factory;
 
-public class PizzaStore {
-
-    SimplePizzaFactory factory;
-
-    public PizzaStore(SimplePizzaFactory simplePizzaFactory) {
-        this.factory = simplePizzaFactory;
-    }
+public abstract class PizzaStore {
 
     public Pizza orderPizza(String type) {
-        Pizza pizza;
 
-        pizza = factory.createPizza(type);
+        Pizza pizza = new Pizza();
 
         pizza.prepare();
         pizza.bake();
