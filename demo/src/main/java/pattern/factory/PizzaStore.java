@@ -2,9 +2,17 @@ package pattern.factory;
 
 public class PizzaStore {
 
-    public Pizza orderPizza() {
+    public Pizza orderPizza(String type) {
 
-        Pizza pizza = new Pizza();
+        Pizza pizza = null;
+
+        if (type.equals("cheese")) {
+            pizza = new CheesePizza();
+        } else if (type.equals("greek")) {
+            pizza = new GreekPizza();
+        } else if (type.equals("pepperoni")) {
+            pizza = new PepperoniPizza();
+        }
 
         pizza.prepare();
         pizza.bake();
