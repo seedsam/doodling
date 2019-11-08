@@ -1,8 +1,8 @@
 package pattern.factory;
 
-public abstract class PizzaStore {
+public class PizzaStore {
 
-    public Pizza orderPizza(String type) {
+    public Pizza orderPizza() {
 
         Pizza pizza = new Pizza();
 
